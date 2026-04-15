@@ -46,22 +46,23 @@ int main() {
 
         for(i = 0; i < n; i++) {
             if(finish[i] == 0) {
-                int flag = 0;
+                int flag = 1;
 
                 // Check Need <= Available
                 for(j = 0; j < m; j++) {
                     if(need[i][j] > avail[j]) {
-                        flag = 1;
+                        flag = 0;
                         break;
                     }
                 }
 
                 // If process can be executed
-                if(flag == 0) {
+                if(flag == 1) {
                     for(j = 0; j < m; j++)
                         avail[j] += alloc[i][j];
 
-                    safe[count++] = i;
+                    safe[count] = i;
+                    count++;
                     finish[i] = 1;
                     found = 1;
                 }
@@ -79,7 +80,7 @@ int main() {
     printf("\nSystem is in SAFE state\n");
     printf("Safe sequence: ");
     for(i = 0; i < n; i++)
-        printf("P%d ", safe[i]);
+        printf("P%d ", safe[i]+1);
 
     return 0;
 }
