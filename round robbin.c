@@ -1,67 +1,64 @@
-#include <stdio.h>
-
-int main() {
-    int n, i, tq;
-    int bt[20], rt[20], at[20];
-    int wt[20], tat[20];
-    int time = 0, completed = 0;
-
-    printf("Enter number of processes: ");
-    scanf("%d", &n);
-
-    printf("Enter arrival times:\n");
-    for(i = 0; i < n; i++) {
-        scanf("%d", &at[i]);
-    }
-
-    printf("Enter burst times:\n");
-    for(i = 0; i < n; i++) {
-        scanf("%d", &bt[i]);
-        rt[i] = bt[i];   // copy to remaining time
-    }
-
-    printf("Enter Time Quantum: ");
-    scanf("%d", &tq);
-
-    while(completed < n) {
-        int done = 1;
-
-        for(i = 0; i < n; i++) {
-            if(at[i] <= time && rt[i] > 0) {
-                done = 0;
-
-                if(rt[i] > tq) {
-                    time += tq;
-                    rt[i] -= tq;
-                } else {
-                    time += rt[i];
-                    rt[i] = 0;
-                    completed++;
-
-                    tat[i] = time - at[i];
-                    wt[i] = tat[i] - bt[i];
-                }
-            }
-        }
-
-        if(done) {
-            time++; // CPU idle
-        }
-    }
-
-    float avgwt = 0, avgtat = 0;
-
-    printf("\nProcess\tAT\tBT\tWT\tTAT\n");
-    for(i = 0; i < n; i++) {
-        avgwt += wt[i];
-        avgtat += tat[i];
-
-        printf("P%d\t%d\t%d\t%d\t%d\n",
-               i+1, at[i], bt[i], wt[i], tat[i]);
-    }
-
-    printf("\nAverage Waiting Time = %.2f", avgwt/n);
-    printf("\nAverage Turnaround Time = %.2f\n", avgtat/n);
-
-    return 0;
+#include<stdio.h>
+void main()
+{
+	int n,i,j,tq,awt=0,atat=0;
+	printf("enter no:of processes");
+	scanf("%d",&n);
+	int burst[n],rt[n],at[n],wt[10],tat[n];
+	printf("enter burst times:");
+	for(i=0;i<n;i++)
+	{
+		scanf("%d",&burst[i]);
+		rt[i]=burst[i];
+	}
+	printf("enter arrival times:");
+	for(i=0;i<n;i++)
+	{
+		scanf("%d",&at[i]);
+	}
+	printf("enter time quantum");
+	scanf("%d",&tq);
+	int completed=0,time=0;
+	while(completed!=n)
+	{
+		int found=0;
+		for(i=0;i<n;i++)
+		{
+			if(at[i]<=time && rt[i]>0)
+			{
+				found=1;
+				if(rt[i]>tq)
+				{
+					rt[i]-=tq;
+					time+=tq;
+				}
+				else
+				{
+					time+=rt[i];
+					rt[i]=0;
+					completed++;		
+					tat[i]=time-at[i];
+					wt[i]=tat[i]-burst[i];
+				}
+			}
+		}
+		if(!found)
+			time++;
+	}
+	printf("process\t at\t bt\t wt\t tat\n");
+	for(i=0;i<n;i++)
+	{
+		printf("p%d\t%d\t%d\t%d\t%d\n",i+1,at[i],burst[i],wt[i],tat[i]);
+		awt+=wt[i];
+		atat+=tat[i];
+	}
+	printf("awt=%.2f\tatat=%.2f",(float)awt/n,(float)atat/n);
 }
+			
+				
+					
+			
+				
+		
+	
+	
